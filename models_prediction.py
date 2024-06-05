@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load the CSV file into a DataFrame
-data = pd.read_csv('new_dataset1.csv')
-data = data.drop(['Status', 'Drug'], axis=1)
+data = pd.read_csv('../preprocessing/new_dataset1.csv')
+data = data.drop(['SGOT.IR','Cholesterol.IR', 'Ascites','Sex','Platelets.IR'], axis=1)
 
 # Assuming X contains all the features and y contains the target variable 'st'
 X = data.drop(['st'], axis=1)
@@ -43,14 +43,14 @@ for name, model in models.items():
     precision = precision_score(y_test, y_pred)
     recall = recall_score(y_test, y_pred)
     f1 = f1_score(y_test, y_pred)
-    
+
     # Store the results
     results['Model'].append(name)
     results['Accuracy'].append(accuracy)
     results['Precision'].append(precision)
     results['Recall'].append(recall)
     results['F1-score'].append(f1)
-    
+
     # Print the results
     print(f"{name}:")
     print(f"  Accuracy: {accuracy}")
@@ -58,13 +58,6 @@ for name, model in models.items():
     print(f"  Recall: {recall}")
     print(f"  F1-score: {f1}")
     print()
-    
-    # Plot confusion matrix
-    cm = confusion_matrix(y_test, y_pred)
-    disp = ConfusionMatrixDisplay(confusion_matrix=cm)
-    disp.plot()
-    plt.title(f'{name} Confusion Matrix')
-    plt.show()
 
 # Convert the results dictionary to a DataFrame
 results_df = pd.DataFrame(results)
@@ -94,3 +87,14 @@ plt.ylabel('Score')
 plt.ylim(0, 1)
 plt.legend(loc='upper right')
 plt.show()
+
+# Add Random Forest results to the results dictionary
+results['Model'].append('Random Forest')
+results['Accuracy'].append(accuracy)
+results['Precision'].append(precision)
+results['Recall'].append(recall)
+results['F1-score'].append(f1)
+
+# Convert the updated results dictionary to a DataFrame
+results_df = pd.DataFrame(results)
+
